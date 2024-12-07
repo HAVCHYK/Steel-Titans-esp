@@ -5,6 +5,74 @@ local starterGui = player.PlayerGui
 local hotkey = getgenv().hotkey
 local db = false
 
+function viewStats()
+	for _, eblan in pairs(game.workspace:GetChildren()) do
+		if eblan:IsA("Model") then
+			local Owner = eblan:FindFirstChild("Owner")
+			if Owner then
+				pcall(function()
+					if Owner.Value ~= player.Name then
+						local turret = eblan.Main.Turret.MainTurret
+						if turret then
+							local tankStats = eblan.Stats
+							if db then
+								local currentHealth = tankStats.Health
+								local origHealth = tankStats.Health.Orig
+								
+								local billBUI = Instance.new("BillboardGui")
+								billBUI.Name = "EblansDetect"
+								billBUI.Size = UDim2.new(25, 0, 4, 0)
+								billBUI.StudsOffsetWorldSpace = Vector3.new(0, 8.5, 0)
+								billBUI.AlwaysOnTop = true
+								billBUI.Parent = turret
+								task.delay(0.2, function()
+									billBUI:Destroy()
+								end)
+								local textLabel = Instance.new("TextLabel")
+								textLabel.TextScaled = true
+								textLabel.BackgroundTransparency = 1
+								textLabel.Size = UDim2.new(1, 0, 1, 0)
+								textLabel.TextColor3 = Color3.new(255,255,255)
+								textLabel.Text = string.format("Health: %s/%s", currentHealth.Value, origHealth.Value)
+								textLabel.Parent = billBUI
+								
+								local uiStroke = Instance.new("UIStroke")
+								uiStroke.Color = Color3.fromRGB(0,0,0)
+								uiStroke.Thickness = 2
+								uiStroke.Parent = textLabel
+							end
+							if db then
+								local reloadTime = tankStats.Reload
+								local billBUI = Instance.new("BillboardGui")
+								billBUI.Name = "EblansDetect"
+								billBUI.Size = UDim2.new(20, 0, 4, 0)
+								billBUI.StudsOffsetWorldSpace = Vector3.new(0, 4, 0)
+								billBUI.AlwaysOnTop = true
+								billBUI.Parent = turret
+								task.delay(0.2, function()
+									billBUI:Destroy()
+								end)
+								local textLabel = Instance.new("TextLabel")
+								textLabel.TextScaled = true
+								textLabel.BackgroundTransparency = 1
+								textLabel.Size = UDim2.new(1, 0, 1, 0)
+								textLabel.TextColor3 = Color3.new(255,255,255)
+								textLabel.Text = string.format("Reload Time: %s", reloadTime.Value)
+								textLabel.Parent = billBUI
+								
+								local uiStroke = Instance.new("UIStroke")
+								uiStroke.Color = Color3.fromRGB(0,0,0)
+								uiStroke.Thickness = 2
+								uiStroke.Parent = textLabel
+							end
+						end
+					end
+				end)
+			end
+		end
+	end
+end
+
 function vhHandler()
 	for _, eblan in pairs(game.workspace:GetChildren()) do
 		if eblan:IsA("Model") then
@@ -76,6 +144,10 @@ local function vh()
 		db = true
 		task.spawn(function()
 			repeat
+				task.spawn(function()
+					task.wait(0.1)
+					viewStats()
+				end)
 				task.wait(0.1)
 				vhHandler()
 			until db == false
