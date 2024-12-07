@@ -33,7 +33,7 @@ function vhHandler()
 
 								local uiStroke = Instance.new("UIStroke")
 								uiStroke.Color = Color3.fromRGB(0,0,0)
-								uiStroke.Thickness = 3.5
+								uiStroke.Thickness = 2
 								uiStroke.ApplyStrokeMode = "Border"
 								uiStroke.Parent = textLabel
 								print("Done")
@@ -57,7 +57,7 @@ function vhHandler()
 
 									local uiStroke = Instance.new("UIStroke")
 									uiStroke.Color = Color3.fromRGB(0,0,0)
-									uiStroke.Thickness = 3.5
+									uiStroke.Thickness = 2
 									uiStroke.ApplyStrokeMode = "Border"
 									uiStroke.Parent = textLabel
 									print("Done")
